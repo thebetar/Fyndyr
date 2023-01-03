@@ -1,62 +1,49 @@
+import { Storage } from '@ionic/storage';
+import { v4 } from 'uuid';
+
 export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
+	message: string;
+	date: string;
+	id: string;
 }
 
-const messages: Message[] = [
-  {
-    fromName: 'Matt Chorsey',
-    subject: 'New event: Trip to Vegas',
-    date: '9:32 AM',
-    id: 0
-  },
-  {
-    fromName: 'Lauren Ruthford',
-    subject: 'Long time no chat',
-    date: '6:12 AM',
-    id: 1
-  },
-  {
-    fromName: 'Jordan Firth',
-    subject: 'Report Results',
-    date: '4:55 AM',
-    id: 2
+export const store = new Storage();
 
-  },
-  {
-    fromName: 'Bill Thomas',
-    subject: 'The situation',
-    date: 'Yesterday',
-    id: 3
-  },
-  {
-    fromName: 'Joanne Pollan',
-    subject: 'Updated invitation: Swim lessons',
-    date: 'Yesterday',
-    id: 4
-  },
-  {
-    fromName: 'Andrea Cornerston',
-    subject: 'Last minute ask',
-    date: 'Yesterday',
-    id: 5
-  },
-  {
-    fromName: 'Moe Chamont',
-    subject: 'Family Calendar - Version 1',
-    date: 'Last Week',
-    id: 6
-  },
-  {
-    fromName: 'Kelly Richardson',
-    subject: 'Placeholder Headhots',
-    date: 'Last Week',
-    id: 7
-  }
-];
+export const initStore = async () => {
+	await store.create();
+};
 
-export const getMessages = () => messages;
+let messages: Message[] = [];
 
-export const getMessage = (id: number) => messages.find(m => m.id === id);
+export const loadMessages = async () => {
+	const data = await store.get('messages');
+	if (data) {
+		messages = data;
+	}
+};
+
+export const loadAndGetMessages = async () => {
+	await loadMessages();
+	return messages;
+};
+
+export const getMessages = async () => {
+	return messages;
+};
+
+export const getMessage = (id: string) => messages.find(m => m.id === id);
+
+export const addMessage = (message: string) => {
+	const newMessage = {
+		id: v4(),
+		message,
+		date: new Date().toISOString()
+	};
+	messages.push(newMessage);
+	store.set('messages', messages);
+};
+
+export const deleteMessage = (id: string) => {
+	messages = messages.filter(m => m.id !== id);
+	store.set('messages', messages);
+};
