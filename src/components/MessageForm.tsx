@@ -1,7 +1,18 @@
-import { IonContent, IonHeader, IonItem, IonToolbar, IonTitle, IonInput, IonLabel, IonButton } from '@ionic/react';
+import {
+	IonContent,
+	IonHeader,
+	IonItem,
+	IonToolbar,
+	IonTitle,
+	IonInput,
+	IonLabel,
+	IonButton,
+	IonIcon
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import { DEFAULT_PRIMARY_COLOR, DEFAULT_SECONDARY_COLOR, Message, addMessage, updateMessage } from '../data/messages';
+import { closeOutline, saveOutline } from 'ionicons/icons';
 
 interface MessageFormProps {
 	message: Message | null;
@@ -64,15 +75,17 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 			</IonHeader>
 			<IonContent>
 				<form onSubmit={__save as any}>
-					<IonItem className="ion-padding">
+					<IonItem className="ion-margin-horizontal mt-4">
 						<IonLabel position="stacked">Message</IonLabel>
 						<IonInput
 							onIonChange={e => setMessageText(e.detail.value!)}
 							value={messageText}
+							autoCapitalize="on"
 							placeholder="Message..."
+							className="py-2"
 						/>
 					</IonItem>
-					<IonItem className="ion-padding">
+					<IonItem className="ion-margin-horizontal">
 						<IonLabel position="stacked">Primary color</IonLabel>
 						<IonInput
 							onIonChange={e => setPrimaryColor(e.detail.value!)}
@@ -82,6 +95,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 							inputMode="text"
 							type="text"
 							placeholder="Primary color..."
+							className="py-2"
 						/>
 						<div
 							style={{ backgroundColor: `#${primaryColor}` }}
@@ -89,7 +103,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 							className="w-8 h-8 m-auto"
 						></div>
 					</IonItem>
-					<IonItem className="ion-padding">
+					<IonItem className="ion-margin-horizontal mb-4">
 						<IonLabel position="stacked">Secondary color</IonLabel>
 						<IonInput
 							onIonChange={e => setSecondaryColor(e.detail.value!)}
@@ -97,6 +111,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 							minlength={3}
 							maxlength={6}
 							placeholder="Secondary color..."
+							className="py-2"
 						/>
 						<div
 							style={{ backgroundColor: `#${secondaryColor}` }}
@@ -104,7 +119,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 							className="w-8 h-8 m-auto"
 						></div>
 					</IonItem>
-					<IonItem className="ion-padding-horizontal">
+					<IonItem className="ion-margin-horizontal">
 						<IonLabel>
 							<IonButton
 								disabled={!messageText}
@@ -112,14 +127,20 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 								color="success"
 								fill="solid"
 								type="submit"
+								className="h-10 my-2 font-semibold"
 							>
+								<IonIcon icon={saveOutline} slot="start" />
 								Save
 							</IonButton>
-						</IonLabel>
-					</IonItem>
-					<IonItem className="ion-padding-horizontal">
-						<IonLabel>
-							<IonButton onClick={__cancel} expand="block" color="danger" fill="solid" type="button">
+							<IonButton
+								onClick={__cancel}
+								expand="block"
+								color="danger"
+								fill="solid"
+								type="button"
+								className="h-10 my-2 font-semibold"
+							>
+								<IonIcon icon={closeOutline} slot="start" />
 								Cancel
 							</IonButton>
 						</IonLabel>

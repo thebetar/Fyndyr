@@ -1,5 +1,5 @@
-import { IonIcon, IonItem, IonLabel } from '@ionic/react';
-import { pencil, trash } from 'ionicons/icons';
+import { IonContent, IonIcon, IonItem, IonLabel, IonPopover } from '@ionic/react';
+import { ellipsisVertical, pencil, trash } from 'ionicons/icons';
 import moment from 'moment';
 
 import { Message } from '../data/messages';
@@ -26,13 +26,29 @@ export const MessageListItem: React.FC<MessageListItemProps> = ({ message, onPre
 	}
 
 	return (
-		<IonItem detail={false} className="ion-padding-horizontal" onClick={() => onPreview(message)}>
+		<IonItem detail={false} className="ion-padding-horizontal" onClick={() => onPreview(message)} button>
 			<IonLabel>
-				<h3>{message.message}</h3>
-				<p>Created at {moment(message.date).format('DD-MM-YYYY HH:mm')}</p>
+				<h3 className="font-semibold text-lg">{message.message}</h3>
+				<p className="text-xs">Created at {moment(message.date).format('DD-MM-YYYY HH:mm')}</p>
 			</IonLabel>
-			<IonIcon onClick={__editMessage as any} icon={pencil} slot="end" />
-			<IonIcon onClick={__deleteMessage as any} icon={trash} slot="end" />
+			<IonIcon
+				id={`options-button-${message.id}`}
+				onClick={e => e.stopPropagation()}
+				icon={ellipsisVertical}
+				slot="end"
+			/>
+			<IonPopover trigger={`options-button-${message.id}`} side="bottom" alignment="end">
+				<IonContent>
+					<IonItem onClick={__editMessage as any} button>
+						<IonIcon icon={pencil} slot="start" />
+						<IonLabel>Edit</IonLabel>
+					</IonItem>
+					<IonItem onClick={__deleteMessage as any} button>
+						<IonIcon icon={trash} slot="start" />
+						<IonLabel>Delete</IonLabel>
+					</IonItem>
+				</IonContent>
+			</IonPopover>
 		</IonItem>
 	);
 };

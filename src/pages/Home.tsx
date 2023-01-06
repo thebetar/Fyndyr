@@ -88,7 +88,7 @@ export const Home = () => {
 		<IonPage id="home-page">
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle>Inbox</IonTitle>
+					<IonTitle className="font-bold">Messages</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
