@@ -49,15 +49,25 @@ export const Home = () => {
 		e.detail.complete();
 	}
 
-	async function __setPreview(m: Message) {
+	function __setPreview(m: Message) {
 		setMessage(m);
 		setPreviewModalToggle(true);
 	}
 
-	async function __setDelete(m: Message) {
+	function __setEdit(m: Message) {
+		setMessage(m);
+		setFormModalToggle(true);
+	}
+
+	function __setDelete(m: Message) {
 		setMessage(m);
 
 		setDeleteModalToggle(true);
+	}
+
+	async function __getMessages() {
+		const msgs = await getMessages();
+		setMessages(msgs);
 	}
 
 	async function __formDismiss(changed = false) {
@@ -68,9 +78,10 @@ export const Home = () => {
 		setFormModalToggle(false);
 	}
 
-	async function __getMessages() {
-		const msgs = await getMessages();
-		setMessages(msgs);
+	async function __previewDismiss() {
+		setMessage(null);
+
+		setPreviewModalToggle(false);
 	}
 
 	return (
@@ -93,7 +104,13 @@ export const Home = () => {
 
 				<IonList>
 					{messages.map(m => (
-						<MessageListItem onPreview={__setPreview} onDelete={__setDelete} key={m.id} message={m} />
+						<MessageListItem
+							onPreview={__setPreview}
+							onEdit={__setEdit}
+							onDelete={__setDelete}
+							key={m.id}
+							message={m}
+						/>
 					))}
 				</IonList>
 			</IonContent>
@@ -103,10 +120,10 @@ export const Home = () => {
 				</IonFabButton>
 			</IonFab>
 			<IonModal isOpen={formModalToggle} onWillDismiss={__formDismiss as any}>
-				<MessageForm onDismiss={__formDismiss} />
+				<MessageForm message={message} onDismiss={__formDismiss} />
 			</IonModal>
-			<IonModal isOpen={previewModalToggle} onWillDismiss={() => setPreviewModalToggle(false)}>
-				<MessagePreview message={message} onDismiss={() => setPreviewModalToggle(false)} />
+			<IonModal isOpen={previewModalToggle} onWillDismiss={__previewDismiss as any}>
+				<MessagePreview message={message} onDismiss={__previewDismiss as any} />
 			</IonModal>
 			<IonAlert
 				isOpen={deleteModalToggle}
@@ -124,8 +141,10 @@ export const Home = () => {
 					{
 						text: 'Delete',
 						handler: async () => {
-							await deleteMessage(message!.id);
+							await deleteMessage(message!.id as string);
 							await __getMessages();
+
+							setMessage(null);
 							setDeleteModalToggle(false);
 						}
 					}

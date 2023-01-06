@@ -2,10 +2,15 @@ import { Storage } from '@ionic/storage';
 import { v4 } from 'uuid';
 
 export interface Message {
+	id?: string;
+	date?: string;
 	message: string;
-	date: string;
-	id: string;
+	primaryColor: string;
+	secondaryColor: string;
 }
+
+export const DEFAULT_PRIMARY_COLOR = '000000';
+export const DEFAULT_SECONDARY_COLOR = 'ffffff';
 
 export const store = new Storage();
 
@@ -33,14 +38,22 @@ export const getMessages = async () => {
 
 export const getMessage = (id: string): Message => messages.find(m => m.id === id)!;
 
-export const addMessage = (message: string) => {
+export const addMessage = ({ message, primaryColor, secondaryColor }: Message) => {
 	const newMessage = {
 		id: v4(),
+		date: new Date().toISOString(),
 		message,
-		date: new Date().toISOString()
+		primaryColor,
+		secondaryColor
 	};
 	messages.push(newMessage);
 	store.set('messages', messages);
+};
+
+export const updateMessage = async (id: string, message: Message) => {
+	const index = messages.findIndex(m => m.id === id);
+	messages[index] = message;
+	await store.set('messages', messages);
 };
 
 export const deleteMessage = async (id: string) => {
