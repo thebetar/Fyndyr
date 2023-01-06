@@ -2,29 +2,29 @@ import { IonIcon, IonItem, IonLabel } from '@ionic/react';
 import { trash } from 'ionicons/icons';
 import moment from 'moment';
 
-import { Message, deleteMessage } from '../data/messages';
-import './MessageListItem.css';
+import { Message } from '../data/messages';
+import React from 'react';
 
 interface MessageListItemProps {
 	message: Message;
-	onDelete: () => void;
+	onPreview: (m: Message) => void;
+	onDelete: (m: Message) => void;
 }
 
-const MessageListItem: React.FC<MessageListItemProps> = ({ message, onDelete }) => {
-	const __deleteMessage = () => {
-		deleteMessage(message.id);
-		onDelete();
-	};
+export const MessageListItem: React.FC<MessageListItemProps> = ({ message, onPreview, onDelete }) => {
+	function __deleteMessage(e: MouseEvent) {
+		e.stopPropagation();
+
+		onDelete(message);
+	}
 
 	return (
-		<IonItem detail={false} className="ion-padding-horizontal">
+		<IonItem detail={false} className="ion-padding-horizontal" onClick={() => onPreview(message)}>
 			<IonLabel>
 				<h3>{message.message}</h3>
 				<p>Created at {moment(message.date).format('DD-MM-YYYY HH:mm')}</p>
 			</IonLabel>
-			<IonIcon onClick={__deleteMessage} icon={trash} slot="end" />
+			<IonIcon onClick={__deleteMessage as any} icon={trash} slot="end" />
 		</IonItem>
 	);
 };
-
-export default MessageListItem;

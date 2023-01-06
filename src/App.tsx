@@ -1,6 +1,5 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact, useIonViewWillEnter } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonApp, IonPage, IonSpinner, setupIonicReact } from '@ionic/react';
+
 import Home from './pages/Home';
 
 /* Core CSS required for Ionic components to work properly */
@@ -21,22 +20,34 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { useEffect, useState } from 'react';
+import { initStore, loadMessages } from './data/messages';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+	const [loading, setLoading] = useState<boolean>(true);
+
+	useEffect(() => {
+		__init();
+	});
+
+	async function __init() {
+		await initStore();
+
+		await loadMessages();
+		setLoading(false);
+	}
+
 	return (
 		<IonApp>
-			<IonReactRouter>
-				<IonRouterOutlet>
-					<Route path="/" exact={true}>
-						<Redirect to="/home" />
-					</Route>
-					<Route path="/home" exact={true}>
-						<Home />
-					</Route>
-				</IonRouterOutlet>
-			</IonReactRouter>
+			{loading ? (
+				<IonPage className="h-full w-full flex justify-center items-center">
+					<IonSpinner className="w-20 h-20" />
+				</IonPage>
+			) : (
+				<Home />
+			)}
 		</IonApp>
 	);
 };

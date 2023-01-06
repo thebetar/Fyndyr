@@ -3,22 +3,22 @@ import { useState } from 'react';
 import { addMessage } from '../data/messages';
 
 interface MessageFormProps {
-	onDismiss: () => void;
+	onDismiss: (change: boolean) => void;
 }
 
 export const MessageForm: React.FC<MessageFormProps> = ({ onDismiss }) => {
 	const [message, setMessage] = useState('');
 
-	const __save = () => {
+	function __save() {
 		addMessage(message);
 		setMessage('');
-		onDismiss();
-	};
+		onDismiss(true);
+	}
 
-	const __cancel = () => {
+	function __cancel() {
 		setMessage('');
-		onDismiss();
-	};
+		onDismiss(false);
+	}
 
 	return (
 		<>
@@ -32,6 +32,14 @@ export const MessageForm: React.FC<MessageFormProps> = ({ onDismiss }) => {
 					<IonLabel>Message</IonLabel>
 					<IonInput onIonChange={e => setMessage(e.detail.value!)} placeholder="Message..." />
 				</IonItem>
+				{/* <IonItem className="ion-padding">
+					<IonLabel>Primary color</IonLabel>
+					<IonInput placeholder="Primary color..." />
+				</IonItem>
+				<IonItem className="ion-padding">
+					<IonLabel>Secondary color</IonLabel>
+					<IonInput placeholder="Secondary color..." />
+				</IonItem> */}
 				<IonItem className="ion-padding-horizontal">
 					<IonLabel>
 						<IonButton onClick={__save} disabled={!message} expand="block" color="success" fill="solid">

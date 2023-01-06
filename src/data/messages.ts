@@ -31,7 +31,7 @@ export const getMessages = async () => {
 	return messages;
 };
 
-export const getMessage = (id: string) => messages.find(m => m.id === id);
+export const getMessage = (id: string): Message => messages.find(m => m.id === id)!;
 
 export const addMessage = (message: string) => {
 	const newMessage = {
@@ -43,7 +43,7 @@ export const addMessage = (message: string) => {
 	store.set('messages', messages);
 };
 
-export const deleteMessage = (id: string) => {
+export const deleteMessage = async (id: string) => {
 	messages = messages.filter(m => m.id !== id);
-	store.set('messages', messages);
+	await store.set('messages', messages);
 };
