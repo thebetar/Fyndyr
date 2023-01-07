@@ -63,6 +63,8 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 
 	function __cancel() {
 		setMessageText('');
+		setPrimaryColor(DEFAULT_PRIMARY_COLOR);
+		setSecondaryColor(DEFAULT_SECONDARY_COLOR);
 		onDismiss(false);
 	}
 
@@ -70,7 +72,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 		<>
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle>Message form</IonTitle>
+					<IonTitle>{message ? 'Edit message' : 'Add message'}</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
@@ -100,7 +102,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 						<div
 							style={{ backgroundColor: `#${primaryColor}` }}
 							slot="end"
-							className="w-8 h-8 m-auto"
+							className="w-8 h-8 m-auto rounded-lg"
 						></div>
 					</IonItem>
 					<IonItem className="ion-margin-horizontal mb-4">
@@ -116,7 +118,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 						<div
 							style={{ backgroundColor: `#${secondaryColor}` }}
 							slot="end"
-							className="w-8 h-8 m-auto"
+							className="w-8 h-8 m-auto rounded-lg"
 						></div>
 					</IonItem>
 					<IonItem className="ion-margin-horizontal">

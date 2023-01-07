@@ -71,6 +71,8 @@ export const Home = () => {
 	}
 
 	async function __formDismiss(changed = false) {
+		setMessage(null);
+
 		if (changed) {
 			await __getMessages();
 		}
@@ -88,7 +90,7 @@ export const Home = () => {
 		<IonPage id="home-page">
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle className="font-bold">Messages</IonTitle>
+					<IonTitle>Signal your friends! 💃</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
@@ -115,7 +117,7 @@ export const Home = () => {
 				</IonList>
 			</IonContent>
 			<IonFab vertical="bottom" horizontal="end">
-				<IonFabButton onClick={() => setFormModalToggle(true)}>
+				<IonFabButton onClick={() => setFormModalToggle(true)} color="success">
 					<IonIcon icon={add} />
 				</IonFabButton>
 			</IonFab>

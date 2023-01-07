@@ -26,10 +26,22 @@ export const MessageListItem: React.FC<MessageListItemProps> = ({ message, onPre
 	}
 
 	return (
-		<IonItem detail={false} className="ion-padding-horizontal" onClick={() => onPreview(message)} button>
+		<IonItem detail={false} onClick={() => onPreview(message)} button>
 			<IonLabel>
-				<h3 className="font-semibold text-lg">{message.message}</h3>
-				<p className="text-xs">Created at {moment(message.date).format('DD-MM-YYYY HH:mm')}</p>
+				<div>
+					<div
+						style={{ backgroundColor: `#${message.primaryColor}` }}
+						className="w-4 h-4 rounded-md inline-block mr-2"
+					></div>
+					<h3 className="font-semibold text-lg inline-block">{message.message}</h3>
+				</div>
+				<div>
+					<div
+						style={{ backgroundColor: `#${message.secondaryColor}` }}
+						className="w-4 h-4 rounded-md inline-block mr-2"
+					></div>
+					<p className="text-xs inline-block">Created at {moment(message.date).format('DD-MM-YYYY HH:mm')}</p>
+				</div>
 			</IonLabel>
 			<IonIcon
 				id={`options-button-${message.id}`}
