@@ -9,8 +9,8 @@ export interface Message {
 	secondaryColor: string;
 }
 
-export const DEFAULT_PRIMARY_COLOR = '000000';
-export const DEFAULT_SECONDARY_COLOR = 'ffffff';
+export const DEFAULT_PRIMARY_COLOR = '#000000';
+export const DEFAULT_SECONDARY_COLOR = '#FFFFFF';
 
 export const store = new Storage();
 

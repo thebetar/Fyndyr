@@ -20,11 +20,11 @@ export const MessagePreview: React.FC<MessagePreviewProps> = ({ message, onDismi
 			toggle = !toggle;
 
 			messagePreviewContainer.style.backgroundColor = toggle
-				? `#${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`
-				: `#${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`;
+				? `${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`
+				: `${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`;
 			messagePreviewText.style.color = toggle
-				? `#${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`
-				: `#${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`;
+				? `${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`
+				: `${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`;
 		}, 1000);
 
 		return () => clearInterval(timer as NodeJS.Timeout);
@@ -38,7 +38,7 @@ export const MessagePreview: React.FC<MessagePreviewProps> = ({ message, onDismi
 					id="message-preview-container"
 					className="h-full flex flex-col items-center justify-center"
 					style={{
-						backgroundColor: `#${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`
+						backgroundColor: `${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`
 					}}
 				>
 					<div className="flex-1 flex items-center">
@@ -46,7 +46,7 @@ export const MessagePreview: React.FC<MessagePreviewProps> = ({ message, onDismi
 							id="message-preview-text"
 							className="text-6xl font-semibold rotate-90 message-heading text-center"
 							style={{
-								color: `#${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`
+								color: `${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`
 							}}
 						>
 							{message?.message}

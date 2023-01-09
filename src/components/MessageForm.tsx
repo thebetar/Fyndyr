@@ -7,12 +7,15 @@ import {
 	IonInput,
 	IonLabel,
 	IonButton,
-	IonIcon
+	IonIcon,
+	IonModal,
+	IonButtons
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import { DEFAULT_PRIMARY_COLOR, DEFAULT_SECONDARY_COLOR, Message, addMessage, updateMessage } from '../data/messages';
-import { closeOutline, saveOutline } from 'ionicons/icons';
+import { arrowBack, saveOutline } from 'ionicons/icons';
+import MessageFormColorPicker from './MessageFormColorPicker';
 
 interface MessageFormProps {
 	message: Message | null;
@@ -24,6 +27,9 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 	const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY_COLOR);
 	const [secondaryColor, setSecondaryColor] = useState(DEFAULT_SECONDARY_COLOR);
 
+	const [colorModalToggle, setColorModalToggle] = useState<boolean>(false);
+	const [colorModalType, setColorModalType] = useState<string>('');
+
 	useEffect(() => {
 		if (message) {
 			setMessageText(message.message);
@@ -32,9 +38,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 		}
 	}, [message]);
 
-	function __save(e: SubmitEvent) {
-		e.preventDefault();
-
+	function __save() {
 		if (!__validateForm()) {
 			return;
 		}
@@ -52,13 +56,21 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 	}
 
 	function __validateForm() {
-		return (
-			messageText.length > 0 &&
-			primaryColor.length >= 3 &&
-			primaryColor.length === 6 &&
-			secondaryColor.length >= 3 &&
-			secondaryColor.length === 6
-		);
+		return messageText.length > 0 && primaryColor.length === 7 && secondaryColor.length === 7;
+	}
+
+	function __openModal(type: string) {
+		setColorModalType(type);
+		setColorModalToggle(true);
+	}
+
+	function __setColor(color: string) {
+		if (colorModalType === 'primary') {
+			setPrimaryColor(color);
+		} else {
+			setSecondaryColor(color);
+		}
+		setColorModalToggle(false);
 	}
 
 	function __cancel() {
@@ -72,82 +84,59 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 		<>
 			<IonHeader>
 				<IonToolbar>
+					<IonButtons slot="start">
+						<IonButton onClick={__cancel}>
+							<IonIcon icon={arrowBack} slot="icon-only" />
+						</IonButton>
+					</IonButtons>
 					<IonTitle>{message ? 'Edit message' : 'Add message'}</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<form onSubmit={__save as any}>
-					<IonItem className="ion-margin-horizontal mt-4">
-						<IonLabel position="stacked">Message</IonLabel>
-						<IonInput
-							onIonChange={e => setMessageText(e.detail.value!)}
-							value={messageText}
-							autoCapitalize="on"
-							placeholder="Message..."
-							className="py-2"
-						/>
-					</IonItem>
-					<IonItem className="ion-margin-horizontal">
-						<IonLabel position="stacked">Primary color</IonLabel>
-						<IonInput
-							onIonChange={e => setPrimaryColor(e.detail.value!)}
-							value={primaryColor}
-							minlength={3}
-							maxlength={6}
-							inputMode="text"
-							type="text"
-							placeholder="Primary color..."
-							className="py-2"
-						/>
-						<div
-							style={{ backgroundColor: `#${primaryColor}` }}
-							slot="end"
-							className="w-8 h-8 m-auto rounded-lg"
-						></div>
-					</IonItem>
-					<IonItem className="ion-margin-horizontal mb-4">
-						<IonLabel position="stacked">Secondary color</IonLabel>
-						<IonInput
-							onIonChange={e => setSecondaryColor(e.detail.value!)}
-							value={secondaryColor}
-							minlength={3}
-							maxlength={6}
-							placeholder="Secondary color..."
-							className="py-2"
-						/>
-						<div
-							style={{ backgroundColor: `#${secondaryColor}` }}
-							slot="end"
-							className="w-8 h-8 m-auto rounded-lg"
-						></div>
-					</IonItem>
-					<IonItem className="ion-margin-horizontal">
-						<IonLabel>
-							<IonButton
-								disabled={!messageText}
-								expand="block"
-								color="success"
-								fill="solid"
-								type="submit"
-								className="h-10 my-2 font-semibold"
-							>
-								<IonIcon icon={saveOutline} slot="start" />
-								Save
-							</IonButton>
-							<IonButton
-								onClick={__cancel}
-								expand="block"
-								color="danger"
-								fill="solid"
-								type="button"
-								className="h-10 my-2 font-semibold"
-							>
-								<IonIcon icon={closeOutline} slot="start" />
-								Cancel
-							</IonButton>
-						</IonLabel>
-					</IonItem>
-				</form>
+				<IonItem className="ion-margin-horizontal mt-4">
+					<IonLabel position="stacked">Message</IonLabel>
+					<IonInput
+						onIonChange={e => setMessageText(e.detail.value!)}
+						value={messageText}
+						autoCapitalize="on"
+						placeholder="Message..."
+						className="py-2"
+					/>
+				</IonItem>
+				<IonItem onClick={() => __openModal('primary')} className="ion-margin-horizontal" button>
+					<IonLabel className="py-4">Select primary color</IonLabel>
+					<div
+						style={{ backgroundColor: `${primaryColor}` }}
+						slot="end"
+						className="w-8 h-8 m-auto rounded-lg"
+					></div>
+				</IonItem>
+				<IonItem onClick={() => __openModal('secondary')} className="ion-margin-horizontal mb-4" button>
+					<IonLabel className="py-4">Select secondary color</IonLabel>
+					<div
+						style={{ backgroundColor: `${secondaryColor}` }}
+						slot="end"
+						className="w-8 h-8 m-auto rounded-lg"
+					></div>
+				</IonItem>
+				<IonItem className="ion-margin-horizontal">
+					<IonLabel>
+						<IonButton
+							disabled={!__validateForm}
+							expand="block"
+							color="success"
+							fill="solid"
+							className="h-10 my-2 font-semibold"
+							onClick={__save}
+						>
+							<IonIcon icon={saveOutline} slot="start" />
+							Save
+						</IonButton>
+					</IonLabel>
+				</IonItem>
+				<IonModal isOpen={colorModalToggle}>
+					<MessageFormColorPicker onDismiss={() => setColorModalToggle(false)} onSelect={__setColor} />
+				</IonModal>
 			</IonContent>
 		</>
 	);
