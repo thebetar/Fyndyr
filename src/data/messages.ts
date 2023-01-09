@@ -7,6 +7,7 @@ export interface Message {
 	message: string;
 	primaryColor: string;
 	secondaryColor: string;
+	speed: string;
 }
 
 export const DEFAULT_PRIMARY_COLOR = '#000000';
@@ -38,13 +39,14 @@ export const getMessages = async () => {
 
 export const getMessage = (id: string): Message => messages.find(m => m.id === id)!;
 
-export const addMessage = ({ message, primaryColor, secondaryColor }: Message) => {
+export const addMessage = ({ message, primaryColor, secondaryColor, speed }: Message) => {
 	const newMessage = {
 		id: v4(),
 		date: new Date().toISOString(),
 		message,
 		primaryColor,
-		secondaryColor
+		secondaryColor,
+		speed
 	};
 	messages.push(newMessage);
 	store.set('messages', messages);

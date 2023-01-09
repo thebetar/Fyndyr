@@ -25,11 +25,24 @@ export const MessagePreview: React.FC<MessagePreviewProps> = ({ message, onDismi
 			messagePreviewText.style.color = toggle
 				? `${message?.primaryColor || DEFAULT_PRIMARY_COLOR}`
 				: `${message?.secondaryColor || DEFAULT_SECONDARY_COLOR}`;
-		}, 1000);
+		}, __getSpeed());
 
 		return () => clearInterval(timer as NodeJS.Timeout);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	function __getSpeed() {
+		switch (message?.speed) {
+			case 'slow':
+				return 2000;
+			case 'normal':
+				return 1000;
+			case 'fast':
+				return 500;
+			default:
+				return 1000;
+		}
+	}
 
 	return (
 		<>

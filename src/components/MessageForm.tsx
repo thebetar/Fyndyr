@@ -9,7 +9,9 @@ import {
 	IonButton,
 	IonIcon,
 	IonModal,
-	IonButtons
+	IonButtons,
+	IonSegment,
+	IonSegmentButton
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
@@ -26,6 +28,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 	const [messageText, setMessageText] = useState('');
 	const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY_COLOR);
 	const [secondaryColor, setSecondaryColor] = useState(DEFAULT_SECONDARY_COLOR);
+	const [speed, setSpeed] = useState('normal');
 
 	const [colorModalToggle, setColorModalToggle] = useState<boolean>(false);
 	const [colorModalType, setColorModalType] = useState<string>('');
@@ -35,6 +38,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 			setMessageText(message.message);
 			setPrimaryColor(message.primaryColor);
 			setSecondaryColor(message.secondaryColor);
+			setSpeed(message.speed);
 		}
 	}, [message]);
 
@@ -44,9 +48,9 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 		}
 
 		if (message) {
-			updateMessage(message.id!, { message: messageText, primaryColor, secondaryColor });
+			updateMessage(message.id!, { message: messageText, primaryColor, secondaryColor, speed });
 		} else {
-			addMessage({ message: messageText, primaryColor, secondaryColor });
+			addMessage({ message: messageText, primaryColor, secondaryColor, speed });
 		}
 
 		setMessageText('');
@@ -93,7 +97,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonItem className="ion-margin-horizontal mt-4">
+				<IonItem className="mx-4 mt-4">
 					<IonLabel position="stacked">Message</IonLabel>
 					<IonInput
 						onIonChange={e => setMessageText(e.detail.value!)}
@@ -103,7 +107,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 						className="py-2"
 					/>
 				</IonItem>
-				<IonItem onClick={() => __openModal('primary')} className="ion-margin-horizontal" button>
+				<IonItem onClick={() => __openModal('primary')} className="mx-4" button>
 					<IonLabel className="py-4">Select primary color</IonLabel>
 					<div
 						style={{ backgroundColor: `${primaryColor}` }}
@@ -111,7 +115,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 						className="w-8 h-8 m-auto rounded-lg"
 					></div>
 				</IonItem>
-				<IonItem onClick={() => __openModal('secondary')} className="ion-margin-horizontal mb-4" button>
+				<IonItem onClick={() => __openModal('secondary')} className="mx-4" button>
 					<IonLabel className="py-4">Select secondary color</IonLabel>
 					<div
 						style={{ backgroundColor: `${secondaryColor}` }}
@@ -119,7 +123,24 @@ export const MessageForm: React.FC<MessageFormProps> = ({ message, onDismiss }) 
 						className="w-8 h-8 m-auto rounded-lg"
 					></div>
 				</IonItem>
-				<IonItem className="ion-margin-horizontal">
+				<IonItem className="mx-4">
+					<IonLabel>Speed</IonLabel>
+				</IonItem>
+				<IonItem className="mb-4 mx-4">
+					<IonSegment value={speed} onIonChange={e => setSpeed(e.detail.value!)}>
+						<IonSegmentButton value="slow">
+							<IonLabel>Slow</IonLabel>
+						</IonSegmentButton>
+						<IonSegmentButton value="normal">
+							<IonLabel>Default</IonLabel>
+						</IonSegmentButton>
+						<IonSegmentButton value="fast">
+							<IonLabel>Fast</IonLabel>
+						</IonSegmentButton>
+					</IonSegment>
+				</IonItem>
+
+				<IonItem className="mx-4">
 					<IonLabel>
 						<IonButton
 							disabled={!__validateForm}
