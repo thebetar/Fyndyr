@@ -1,10 +1,10 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'LostSignal',
-  webDir: 'build',
-  bundledWebRuntime: false
+	appId: 'nl.vonkprogramming.fyndyr',
+	appName: 'Fyndyr',
+	webDir: 'build',
+	bundledWebRuntime: false
 };
 
 export default config;

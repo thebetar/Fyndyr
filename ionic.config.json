@@ -1,7 +1,7 @@
 {
-  "name": "LostSignal",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
+	"name": "Fyndyr",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "react"
 }

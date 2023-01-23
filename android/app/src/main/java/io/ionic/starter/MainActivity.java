@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package nl.vonkprogramming.fyndyr;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -67,8 +67,8 @@ export const MessagePreview: React.FC<MessagePreviewProps> = ({ message, onDismi
 					</div>
 				</div>
 			</IonContent>
-			<IonFab vertical="top" horizontal="end">
-				<IonFabButton color="danger" onClick={onDismiss} className="border-4 border-white rounded-full">
+			<IonFab vertical="top" horizontal="end" slot="fixed">
+				<IonFabButton color="danger" size="small" onClick={onDismiss}>
 					<IonIcon icon={close} />
 				</IonFabButton>
 			</IonFab>

@@ -33,7 +33,7 @@ export const MessageListItem: React.FC<MessageListItemProps> = ({ message, onPre
 						style={{ backgroundColor: `${message.primaryColor}` }}
 						className="w-4 h-4 rounded-md inline-block mr-2"
 					></div>
-					<h3 className="font-semibold text-lg inline-block">{message.message}</h3>
+					<h3 className="text-lg inline-block">{message.message}</h3>
 				</div>
 				<div>
 					<div
@@ -49,7 +49,7 @@ export const MessageListItem: React.FC<MessageListItemProps> = ({ message, onPre
 				icon={ellipsisVertical}
 				slot="end"
 			/>
-			<IonPopover trigger={`options-button-${message.id}`} side="bottom" alignment="end">
+			<IonPopover trigger={`options-button-${message.id}`} dismissOnSelect={true} side="bottom" alignment="end">
 				<IonContent>
 					<IonItem onClick={__editMessage as any} button>
 						<IonIcon icon={pencil} slot="start" />

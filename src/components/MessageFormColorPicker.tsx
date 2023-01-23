@@ -6,6 +6,8 @@ import {
 	IonGrid,
 	IonHeader,
 	IonIcon,
+	IonInfiniteScroll,
+	IonInfiniteScrollContent,
 	IonRow,
 	IonTitle,
 	IonToolbar
@@ -18,7 +20,7 @@ interface MessageFormColorPickerProps {
 	onSelect: (color: string) => void;
 }
 
-const colors = [
+const DEFAULT_COLORS = [
 	['#000000', '#999999', '#FFFFFF'],
 	['#FF0000', '#FF8000', '#FFFF00'],
 	['#80FF00', '#00FF00', '#00FF80'],
@@ -33,6 +35,28 @@ const colors = [
 ];
 
 export const MessageFormColorPicker: React.FC<MessageFormColorPickerProps> = ({ onDismiss, onSelect }) => {
+	const [colors, setColors] = React.useState(DEFAULT_COLORS);
+
+	function addColors(amount: number) {
+		const newColors = [];
+		for (let i = 0; i < amount; i++) {
+			const row = [];
+			for (let j = 0; j < 3; j++) {
+				row.push(generateHexColor());
+			}
+			newColors.push(row);
+		}
+		setColors([...colors, ...newColors]);
+	}
+
+	function generateHexColor() {
+		let hexColor = '#';
+		for (let i = 0; i < 6; i++) {
+			hexColor += Math.floor(Math.random() * 16).toString(16);
+		}
+		return hexColor;
+	}
+
 	return (
 		<>
 			<IonHeader>
@@ -60,6 +84,14 @@ export const MessageFormColorPicker: React.FC<MessageFormColorPickerProps> = ({ 
 						</IonRow>
 					))}
 				</IonGrid>
+				<IonInfiniteScroll
+					onIonInfinite={e => {
+						addColors(9);
+						e.target.complete();
+					}}
+				>
+					<IonInfiniteScrollContent></IonInfiniteScrollContent>
+				</IonInfiniteScroll>
 			</IonContent>
 		</>
 	);

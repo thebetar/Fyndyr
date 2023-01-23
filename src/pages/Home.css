@@ -1,3 +1,7 @@
 .message-heading {
 	width: 80vh;
 }
+
+ion-fab-button {
+	--border-radius: 16px;
+}

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { add } from 'ionicons/icons';
 import {
 	IonAlert,
+	IonAvatar,
 	IonContent,
 	IonFab,
 	IonFabButton,
 	IonHeader,
 	IonIcon,
+	IonImg,
 	IonList,
 	IonModal,
 	IonPage,
@@ -90,7 +92,7 @@ export const Home = () => {
 		<IonPage id="home-page">
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle>Signal your friends! 💃</IonTitle>
+					<IonTitle>Fyndyr 💃</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
